@@ -1,7 +1,7 @@
 /* ============================================================
-   Store: unisce i dizionari incorporati (dictionaries.js) con
-   quelli personalizzati salvati in localStorage. Espone Store.
-   Dipende da: dictionaries.js (KEYS, BUILTIN, DICT_META)
+   Store: unisce i dizionari incorporati con quelli personalizzati
+   salvati in localStorage. Espone Store.
+   Dipende da: js/config.js (KEYS, BUILTIN, DICT_META)
    ============================================================ */
 const Store = (function () {
   "use strict";

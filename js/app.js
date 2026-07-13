@@ -1,6 +1,5 @@
 /* ============================================================
-   Generatore. Dipende da: i18n.js (I18N), store.js (Store),
-   dictionaries.js (via Store).
+   Generatore. Dipende da: i18n/i18n.js (I18N), js/store.js (Store).
    ============================================================ */
 (function () {
   "use strict";
@@ -61,7 +60,7 @@
 
     if (!pool.length) {
       lastPlain = "";
-      $("pwd").textContent = "\u2014";
+      $("pwd").textContent = "—";
       resetMeters();
       $("poolInfo").textContent = "0";
       return;
@@ -134,11 +133,11 @@
       const flush = () => { if (buf) { html += `<span class="${cur}">${esc(buf)}</span>`; buf = ""; } };
       for (const c of p.chars) {
         if (c.t !== cur) { flush(); cur = c.t; }
-        buf += (c.t === "w") ? c.v.replace(/[A-Z\u00c0-\u00dd]/g, m => `\u0001${m}\u0001`) : c.v;
+        buf += (c.t === "w") ? c.v.replace(/[A-ZÀ-Ý]/g, m => `${m}`) : c.v;
       }
       flush();
     }
-    html = html.replace(/\u0001(.)\u0001/g, '<span class="cap">$1</span>');
+    html = html.replace(/(.)/g, '<span class="cap">$1</span>');
     $("pwd").innerHTML = html;
   }
 
@@ -146,7 +145,7 @@
   function dictBits({ n, pool, addNum, addSym, charset, insideCount }) {
     let bits = n * Math.log2(pool.length);
     if (cfg.sep === "num") bits += (n - 1) * Math.log2(10);
-    if (cfg.caps === "random") bits += lastPlain.replace(/[^a-z\u00e0-\u00ff]/gi, "").length;
+    if (cfg.caps === "random") bits += lastPlain.replace(/[^a-zà-ÿ]/gi, "").length;
     if (charset.length) {
       if (cfg.pos === "inside") bits += insideCount * (Math.log2(charset.length) + Math.log2(5));
       else { if (addNum) bits += Math.log2(90); if (addSym) bits += Math.log2(SYMBOLS.length); }
@@ -163,10 +162,10 @@
   function bruteBits() {
     const s = lastPlain;
     let charset = 0;
-    if (/[a-z\u00e0-\u00ff]/.test(s)) charset += 26;
-    if (/[A-Z\u00c0-\u00dd]/.test(s)) charset += 26;
+    if (/[a-zà-ÿ]/.test(s)) charset += 26;
+    if (/[A-ZÀ-Ý]/.test(s)) charset += 26;
     if (/[0-9]/.test(s)) charset += 10;
-    if (/[^a-z0-9\u00e0-\u00ff]/i.test(s)) charset += 33; // simboli/spazi (spazio incluso nella classe)
+    if (/[^a-z0-9à-ÿ]/i.test(s)) charset += 33;
     if (charset === 0) return 0;
     return Math.round(s.length * Math.log2(charset));
   }
@@ -186,9 +185,9 @@
   function resetMeters() {
     ["dict", "brute"].forEach(p => {
       $("bar-" + p).style.width = "0%";
-      $("v-" + p).textContent = "\u2014";
+      $("v-" + p).textContent = "—";
       $("bits-" + p).textContent = "0";
-      $("ct-" + p).textContent = "\u2014";
+      $("ct-" + p).textContent = "—";
     });
     $("chars").textContent = "0";
   }
@@ -220,7 +219,6 @@
     const box = $("langs");
     box.innerHTML = "";
     const available = Store.listLanguages();
-    // pulisce selezioni non piu' esistenti
     cfg.langs = cfg.langs.filter(c => available.some(l => l.code === c));
     if (!cfg.langs.length && available.length) cfg.langs = [available[0].code];
 
@@ -230,10 +228,10 @@
       b.dataset.v = l.code;
       const on = cfg.langs.includes(l.code);
       b.setAttribute("aria-pressed", on ? "true" : "false");
-      b.innerHTML = `<span class="tag-dot"></span>${esc(l.label)}` + (l.builtin ? "" : " \u2022");
+      b.innerHTML = `<span class="tag-dot"></span>${esc(l.label)}` + (l.builtin ? "" : " •");
       b.addEventListener("click", () => {
         const i = cfg.langs.indexOf(l.code);
-        if (i >= 0) { if (cfg.langs.length > 1) cfg.langs.splice(i, 1); } // almeno una
+        if (i >= 0) { if (cfg.langs.length > 1) cfg.langs.splice(i, 1); }
         else cfg.langs.push(l.code);
         b.setAttribute("aria-pressed", cfg.langs.includes(l.code) ? "true" : "false");
         Store.setSelectedLangs(cfg.langs);
@@ -261,7 +259,6 @@
     cfg.uiLang = Store.getUiLang();
     cfg.langs = Store.getSelectedLangs();
 
-    // temi
     const topicsBox = $("topics");
     Store.KEYS.forEach(key => {
       const b = document.createElement("button");
@@ -313,7 +310,6 @@
       setTimeout(() => { copyBtn.classList.remove("copied"); copyBtn.innerHTML = "&#10697;"; }, 1200);
     });
 
-    // se torno da editor, ricarico eventuali dizionari nuovi
     window.addEventListener("pageshow", () => { renderLangTags(); generate(); });
 
     applyLang();

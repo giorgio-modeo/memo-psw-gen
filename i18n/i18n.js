@@ -4,6 +4,7 @@
    ============================================================ */
 const I18N = {
   it:{
+    _name:"Italiano",
     eyebrow:"Parole → Password",
     title:"Generatore di password mnemoniche",
     sub:"Catene di parole casuali: una password che la testa ricorda e una macchina fatica a indovinare.",
@@ -49,6 +50,7 @@ const I18N = {
     ed_added:"parole aggiunte"
   },
   en:{
+    _name:"English",
     eyebrow:"Words → Password",
     title:"Mnemonic password generator",
     sub:"Chains of random words: a password your mind remembers and a machine struggles to guess.",
@@ -93,6 +95,7 @@ const I18N = {
     ed_added:"words added"
   },
   fr:{
+    _name:"Français",
     eyebrow:"Mots → Mot de passe",
     title:"Generateur de mots de passe mnemoniques",
     sub:"Des chaines de mots aleatoires : un mot de passe facile a retenir mais difficile a deviner.",
@@ -144,6 +147,7 @@ const I18N = {
   },
 
   es:{
+    _name:"Español",
     eyebrow:"Palabras → Contrasena",
     title:"Generador de contrasenas mnemotecnicas",
     sub:"Cadenas de palabras aleatorias: una contrasena facil de recordar y dificil de adivinar.",
@@ -189,6 +193,7 @@ const I18N = {
   },
 
   de:{
+    _name:"Deutsch",
     eyebrow:"Worter → Passwort",
     title:"Generator fur merkbare Passworter",
     sub:"Zufallige Wortketten: leicht zu merken, schwer zu erraten.",
@@ -232,6 +237,7 @@ const I18N = {
   },
 
   pt:{
+    _name:"Português",
     eyebrow:"Palavras → Senha",
     title:"Gerador de senhas mnemotecnicas",
     sub:"Cadeias de palavras aleatorias: uma senha facil de lembrar e dificil de adivinhar.",

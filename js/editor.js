@@ -31,9 +31,8 @@
       const v = T(k);
       if (v != null) el.placeholder = v;
     });
-    $("uiLang").querySelectorAll("button").forEach(b =>
-      b.setAttribute("aria-pressed", b.dataset.v === uiLang ? "true" : "false")
-    );
+    const langSel = $("uiLang");
+    if (langSel) langSel.value = uiLang;
   }
 
   /* ---- Toast ---- */
@@ -287,15 +286,21 @@
     applyLang();
 
     /* lang switcher */
-    $("uiLang").querySelectorAll("button").forEach(b =>
-      b.addEventListener("click", () => {
-        uiLang = b.dataset.v;
-        Store.setUiLang(uiLang);
-        applyLang();
-        renderPinned();
-        renderDictTabs();
-      })
-    );
+    const langSel = $("uiLang");
+    Object.keys(I18N).forEach(code => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = I18N[code]._name || code.toUpperCase();
+      opt.selected = code === uiLang;
+      langSel.appendChild(opt);
+    });
+    langSel.addEventListener("change", () => {
+      uiLang = langSel.value;
+      Store.setUiLang(uiLang);
+      applyLang();
+      renderPinned();
+      renderDictTabs();
+    });
 
     /* pinned add */
     const pi = $("pinnedInput");

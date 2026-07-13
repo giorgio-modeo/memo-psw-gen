@@ -165,6 +165,16 @@
       if (cfg.pos === "inside") bits += insideCount * (Math.log2(charset.length) + Math.log2(5));
       else { if (addNum) bits += Math.log2(90); if (addSym) bits += Math.log2(SYMBOLS.length); }
     }
+    /* Le parole pinnate sono sconosciute all'attaccante → contributo brute-force */
+    const pinnedStr = Store.getPinnedWords().join("");
+    if (pinnedStr.length) {
+      let pc = 0;
+      if (/[a-zà-ÿ]/.test(pinnedStr)) pc += 26;
+      if (/[A-ZÀ-Ý]/.test(pinnedStr)) pc += 26;
+      if (/[0-9]/.test(pinnedStr)) pc += 10;
+      if (/[^a-z0-9à-ÿ]/i.test(pinnedStr)) pc += 33;
+      if (pc > 0) bits += pinnedStr.length * Math.log2(pc);
+    }
     bits = Math.round(bits);
     if (cfg.maxlen > 0) {
       const alpha = 26 + (cfg.caps !== "none" ? 26 : 0) + (/[0-9]/.test(lastPlain) ? 10 : 0) + (/[^a-z0-9]/i.test(lastPlain) ? 12 : 0);
@@ -298,14 +308,19 @@
     wireSeg("maxlen", "maxlen");
     wireSeg("pos", "pos", () => { $("amountRow").classList.toggle("hidden", cfg.pos !== "inside"); });
 
-    const langBox = $("uiLang");
-    langBox.querySelectorAll("button").forEach(b => {
-      b.setAttribute("aria-pressed", b.dataset.v === cfg.uiLang ? "true" : "false");
-      b.addEventListener("click", () => {
-        langBox.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
-        b.setAttribute("aria-pressed", "true");
-        cfg.uiLang = b.dataset.v; Store.setUiLang(cfg.uiLang); applyLang(); generate();
-      });
+    const langSel = $("uiLang");
+    Object.keys(I18N).forEach(code => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.textContent = I18N[code]._name || code.toUpperCase();
+      opt.selected = code === cfg.uiLang;
+      langSel.appendChild(opt);
+    });
+    langSel.addEventListener("change", () => {
+      cfg.uiLang = langSel.value;
+      Store.setUiLang(cfg.uiLang);
+      applyLang();
+      generate();
     });
 
     $("addNum").addEventListener("change", generate);

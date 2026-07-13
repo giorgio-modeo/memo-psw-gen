@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestione dizionari</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="ed-header">
+    <a class="back-link" href="index.html" data-i18n="ed_back">← Torna al generatore</a>
+    <div class="lang" id="uiLang" role="group" aria-label="Interface language">
+      <button data-v="it" aria-pressed="true">IT</button>
+      <button data-v="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+
+  <h1 data-i18n="ed_title" style="font-size:clamp(20px,4vw,28px);font-weight:700;letter-spacing:-.02em;margin-bottom:6px"></h1>
+  <p class="sub" data-i18n="ed_sub" style="margin-bottom:24px"></p>
+
+  <!-- Parole fisse -->
+  <div class="ed-section">
+    <div class="ed-section-title" data-i18n="pinned_label"></div>
+    <p class="hint" data-i18n="pinned_hint" style="margin-bottom:12px;font-size:12.5px;color:var(--ink-faint)"></p>
+    <div class="word-list" id="pinnedList"></div>
+    <div class="add-row" style="margin-top:4px">
+      <input type="text" id="pinnedInput" data-i18n-placeholder="pinned_add_ph">
+      <button class="add-btn" id="pinnedAdd" data-i18n="ed_add"></button>
+    </div>
+  </div>
+
+  <!-- Dizionari -->
+  <div class="ed-section">
+    <div class="ed-section-title" data-i18n="ed_dict"></div>
+    <div class="dict-tabs" id="dictTabs"></div>
+    <div id="dictEditor"></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="dictionaries/ita_dictionary.js"></script>
+<script src="dictionaries/eng_dictionary.js"></script>
+<script src="js/config.js"></script>
+<script src="i18n/i18n.js"></script>
+<script src="js/store.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>

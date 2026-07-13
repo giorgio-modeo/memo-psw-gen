@@ -94,6 +94,20 @@
       }
     }
 
+    /* Inietta le parole fisse in posizioni casuali tra le parole random */
+    for (const pw of Store.getPinnedWords()) {
+      const wordIdx = parts.reduce((a, p, i) => p.t === "word" ? [...a, i] : a, []);
+      const sv = cfg.sep === "num" ? String(randInt(10)) : cfg.sep;
+      if (!wordIdx.length) {
+        parts.push({ t: "pinned", v: pw });
+      } else {
+        const after = wordIdx[randInt(wordIdx.length)];
+        const ins = [{ t: "pinned", v: pw }];
+        if (sv !== "") ins.unshift({ t: cfg.sep === "num" ? "n" : "sep", v: sv });
+        parts.splice(after + 1, 0, ...ins);
+      }
+    }
+
     if (cfg.maxlen > 0) truncateParts(parts, cfg.maxlen);
     lastPlain = plainText(parts);
     render(parts);
@@ -129,6 +143,7 @@
       if (p.t === "sep") { html += `<span class="sep">${esc(p.v)}</span>`; continue; }
       if (p.t === "n") { html += `<span class="n">${esc(p.v)}</span>`; continue; }
       if (p.t === "s") { html += `<span class="s">${esc(p.v)}</span>`; continue; }
+      if (p.t === "pinned") { html += `<span class="pinned">${esc(p.v)}</span>`; continue; }
       let buf = "", cur = null;
       const flush = () => { if (buf) { html += `<span class="${cur}">${esc(buf)}</span>`; buf = ""; } };
       for (const c of p.chars) {

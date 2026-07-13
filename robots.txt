@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /prove/
+
+Sitemap: https://giorgio-modeo.github.io/memo-psw-gen/sitemap.xml

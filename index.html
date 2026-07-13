@@ -3,20 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Generatore di password mnemoniche</title>
+
+<title>Generatore di password mnemoniche sicure e facili da ricordare</title>
+<meta name="description" content="Genera password mnemoniche sicure con catene di parole casuali (stile Diceware / correct-horse-battery-staple). Stima dell'entropia in tempo reale, italiano e inglese. Tutto resta nel browser: niente tracciamento, niente server.">
+<meta name="keywords" content="generatore password, password mnemoniche, passphrase, diceware, password sicure, entropia, crypto.getRandomValues, password facili da ricordare">
+<meta name="author" content="Giorgio Modeo">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#111111">
+<link rel="canonical" href="https://giorgio-modeo.github.io/memo-psw-gen/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Generatore di password mnemoniche">
+<meta property="og:title" content="Generatore di password mnemoniche sicure e facili da ricordare">
+<meta property="og:description" content="Password mnemoniche sicure da catene di parole casuali, con stima dell'entropia in tempo reale. Italiano e inglese, 100% nel browser.">
+<meta property="og:url" content="https://giorgio-modeo.github.io/memo-psw-gen/">
+<meta property="og:locale" content="it_IT">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://giorgio-modeo.github.io/memo-psw-gen/og-image.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Generatore di password mnemoniche sicure e facili da ricordare">
+<meta name="twitter:description" content="Password mnemoniche sicure da catene di parole casuali, con stima dell'entropia in tempo reale. Italiano e inglese, 100% nel browser.">
+<meta name="twitter:image" content="https://giorgio-modeo.github.io/memo-psw-gen/og-image.png">
+
+<link rel="icon" href="favicon.ico" sizes="any">
 <link rel="stylesheet" href="css/styles.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Generatore di password mnemoniche",
+  "url": "https://giorgio-modeo.github.io/memo-psw-gen/",
+  "description": "Genera password mnemoniche sicure con catene di parole casuali (stile Diceware). Stima dell'entropia in tempo reale, italiano e inglese. Tutto resta nel browser: niente tracciamento, niente server.",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Any (browser)",
+  "browserRequirements": "Requires JavaScript",
+  "inLanguage": ["it", "en"],
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Giorgio Modeo"
+  }
+}
+</script>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="top">
       <div>
-        <div class="eyebrow" data-i18n="eyebrow"></div>
-        <h1 data-i18n="title"></h1>
+        <div class="eyebrow" data-i18n="eyebrow">Parole → Password</div>
+        <h1 data-i18n="title">Generatore di password mnemoniche</h1>
       </div>
       <select class="lang-select" id="uiLang" aria-label="Interface language"></select>
     </div>
-    <p class="sub" data-i18n="sub"></p>
+    <p class="sub" data-i18n="sub">Catene di parole casuali: una password che la testa ricorda e una macchina fatica a indovinare.</p>
     <button class="gen" id="gen" data-i18n="gen"></button>
   </header>
 

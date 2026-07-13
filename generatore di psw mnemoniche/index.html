@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generatore di password mnemoniche</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <div class="eyebrow" data-i18n="eyebrow"></div>
+        <h1 data-i18n="title"></h1>
+      </div>
+      <div class="lang" id="uiLang" role="group" aria-label="Interface language">
+        <button data-v="it" aria-pressed="true">IT</button>
+        <button data-v="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <p class="sub" data-i18n="sub"></p>
+    <button class="gen" id="gen" data-i18n="gen"></button>
+  </header>
+
+  <div class="output">
+    <div class="pwd-wrap">
+      <div class="pwd" id="pwd" aria-live="polite"></div>
+      <div class="pwd-divider"></div>
+      <button class="btn-icon" id="copy" data-i18n-title="copy" title="Copia">&#10697;</button>
+    </div>
+
+    <span class="chars-info"><b id="chars">0</b> <span data-i18n="unit_chars">caratteri</span></span>
+
+    <div class="meters">
+      <div class="meter">
+        <div class="meter-head">
+          <span class="meter-name" data-i18n="meter_dict" data-i18n-title="meter_dict_hint"></span>
+          <span class="meter-verdict" id="v-dict">&mdash;</span>
+        </div>
+        <div class="bar"><i id="bar-dict"></i></div>
+        <div class="meter-foot"><b id="bits-dict">0</b> bit &middot; <span data-i18n="ct_label"></span> <b id="ct-dict">&mdash;</b></div>
+      </div>
+      <div class="meter">
+        <div class="meter-head">
+          <span class="meter-name" data-i18n="meter_brute" data-i18n-title="meter_brute_hint"></span>
+          <span class="meter-verdict" id="v-brute">&mdash;</span>
+        </div>
+        <div class="bar"><i id="bar-brute"></i></div>
+        <div class="meter-foot"><b id="bits-brute">0</b> bit &middot; <span data-i18n="ct_label"></span> <b id="ct-brute">&mdash;</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="row col">
+      <div class="row-text between">
+        <div>
+          <div class="label" data-i18n="lang_label"></div>
+          <div class="hint" data-i18n="lang_hint"></div>
+        </div>
+        <a class="manage-link" href="dictionaries.html" data-i18n="manage"></a>
+      </div>
+      <div class="tags" id="langs" role="group"></div>
+    </div>
+
+    <div class="row col">
+      <div class="row-text">
+        <div class="label" data-i18n="topic_label"></div>
+        <div class="hint" data-i18n="topic_hint"></div>
+      </div>
+      <div class="chips" id="topics" role="group"></div>
+    </div>
+
+    <div class="row">
+      <div class="row-text">
+        <div class="label" data-i18n="words_label"></div>
+        <div class="hint" data-i18n="words_hint"></div>
+      </div>
+      <div class="slider-box">
+        <input type="range" id="words" min="1" max="8" value="4">
+        <span class="count" id="wordsVal">4</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-text"><div class="label" data-i18n="sep_label"></div></div>
+      <div class="seg" id="sep" role="group">
+        <button data-v="-" aria-pressed="true">-</button>
+        <button data-v=".">.</button>
+        <button data-v="_">_</button>
+        <button data-v=" " data-i18n="sep_space"></button>
+        <button data-v="num">123</button>
+        <button data-v="" data-i18n="sep_none"></button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-text"><div class="label" data-i18n="caps_label"></div></div>
+      <div class="seg" id="caps" role="group">
+        <button data-v="none" aria-pressed="true" data-i18n="caps_none"></button>
+        <button data-v="first" data-i18n="caps_first"></button>
+        <button data-v="random" data-i18n="caps_random"></button>
+        <button data-v="all" data-i18n="caps_all"></button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-text">
+        <div class="label" data-i18n="num_label"></div>
+        <div class="hint" data-i18n="num_hint"></div>
+      </div>
+      <label class="tog"><input type="checkbox" id="addNum" checked><span></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-text">
+        <div class="label" data-i18n="sym_label"></div>
+        <div class="hint"><code>! ? @ # $ % &amp; * + = _</code></div>
+      </div>
+      <label class="tog"><input type="checkbox" id="addSym"><span></span></label>
+    </div>
+
+    <div class="row">
+      <div class="row-text"><div class="label" data-i18n="pos_label"></div></div>
+      <div class="seg" id="pos" role="group">
+        <button data-v="end" aria-pressed="true" data-i18n="pos_end"></button>
+        <button data-v="inside" data-i18n="pos_inside"></button>
+      </div>
+    </div>
+
+    <div class="row hidden" id="amountRow">
+      <div class="row-text">
+        <div class="label" data-i18n="amount_label"></div>
+        <div class="hint" data-i18n="amount_hint"></div>
+      </div>
+      <div class="slider-box">
+        <input type="range" id="amount" min="1" max="8" value="2">
+        <span class="count" id="amountVal">2</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="row-text">
+        <div class="label" data-i18n="maxlen_label"></div>
+        <div class="hint" data-i18n="maxlen_hint"></div>
+      </div>
+      <div class="seg" id="maxlen" role="group">
+        <button data-v="0" aria-pressed="true" data-i18n="maxlen_off"></button>
+        <button data-v="12">12</button>
+        <button data-v="16">16</button>
+        <button data-v="20">20</button>
+        <button data-v="24">24</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span data-i18n="foot1"></span> <code>crypto.getRandomValues</code>. <span data-i18n="foot2"></span> <b id="poolInfo">&mdash;</b>.
+    <span data-i18n="foot3"></span>
+  </footer>
+</div>
+
+<!-- dati -> store -> traduzioni -> logica -->
+<script src="dictionaries.js"></script>
+<script src="store.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

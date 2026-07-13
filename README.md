@@ -69,4 +69,4 @@ The generation logic in `app.js` does not need to be modified.
 
 ## License
 
-GPL v3.6
+GPL v3.
